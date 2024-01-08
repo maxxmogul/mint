@@ -23,37 +23,56 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 import dynamic from 'next/dynamic';
 
 export default function Home() {
-  const [network, setNetwork] = useState(WalletAdapterNetwork.Mainnet);
+  // const [network, setNetwork] = useState(WalletAdapterNetwork.Mainnet);
 
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+  // const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+
+  // const wallets = useMemo(
+  //   () => [
+  //     new PhantomWalletAdapter(),
+  //     // new GlowWalletAdapter(),
+  //     // new SlopeWalletAdapter(),
+  //     new SolflareWalletAdapter({ network }),
+  //     new TorusWalletAdapter(),
+  //   ],
+  //   [network]
+  // );
+
+  // const handleChange = (event) => {
+  //   switch (event.target.value) {
+  //     case "devnet":
+  //       setNetwork(WalletAdapterNetwork.Devnet);
+  //       break;
+  //     case "mainnet":
+  //       setNetwork(WalletAdapterNetwork.Mainnet);
+  //       break;
+  //     case "testnet":
+  //       setNetwork(WalletAdapterNetwork.Testnet);
+  //       break;
+  //     default:
+  //       setNetwork(WalletAdapterNetwork.Mainnet);
+  //       break;
+  //   }
+  // };
+  const handleChange = (event) => {
+    console.log("we are using mainnet")
+  };
+
+
+
+  if (!process.env.NEXT_PUBLIC_RPC_ENDPOINT) throw new Error("Missing RPC URL")
+
+  const endpoint = process.env.NEXT_PUBLIC_RPC_ENDPOINT
 
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
-      // new GlowWalletAdapter(),
-      // new SlopeWalletAdapter(),
-      new SolflareWalletAdapter({ network }),
-      new TorusWalletAdapter(),
+      // new BackpackWalletAdapter(),
+      new SolflareWalletAdapter(),
+      // new LedgerWalletAdapter(),
     ],
-    [network]
-  );
-
-  const handleChange = (event) => {
-    switch (event.target.value) {
-      case "devnet":
-        setNetwork(WalletAdapterNetwork.Devnet);
-        break;
-      case "mainnet":
-        setNetwork(WalletAdapterNetwork.Mainnet);
-        break;
-      case "testnet":
-        setNetwork(WalletAdapterNetwork.Testnet);
-        break;
-      default:
-        setNetwork(WalletAdapterNetwork.Mainnet);
-        break;
-    }
-  };
+    []
+  )
 
   const ButtonWrapper = dynamic(() =>
     import('@solana/wallet-adapter-react-ui').then((mod) => mod.WalletMultiButton)
